@@ -33,10 +33,10 @@ import requests
 # 五、拼图识别
 # 53：拼图识别
 def base64_api(uname, pwd, img, typeid):
-    with open(img, 'rb') as f:
-        base64_data = base64.b64encode(f.read())
-        b64 = base64_data.decode()
-    data = {"username": uname, "password": pwd, "typeid": typeid, "image": b64}
+    # with open(img, 'rb') as f:
+    #     base64_data = base64.b64encode(f.read())
+    #     b64 = base64_data.decode()
+    data = {"username": uname, "password": pwd, "typeid": typeid, "image": img}
     result = json.loads(requests.post("http://api.ttshitu.com/predict", json=data).text)
     if result['success']:
         return result["data"]["result"]
@@ -49,22 +49,23 @@ def login():
     verify_url="http://admin.ttshitu.com/captcha_v2"
     session=requests.session()
     resp=session.get(verify_url)
-    print(resp.text)
+    img=resp.json()
+    result=base64_api("q6035945","q6035945",img['img'],3)
 
-    login_url="http://www.ttshitu.com/login.html"
+    login_url="http://admin.ttshitu.com/common/api/login/user"
     headers={
         "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"
     }
     data={
-        "userName": "123",
-        "password": "123",
-        "captcha": "?",
-        "imgId": "f250ac4b1b0844849c379a27657ed535",
+        "userName": "q6035945",
+        "password": "q6035945",
+        "captcha": result,
+        "imgId": img['imgId'],
         "developerFlag": False,
         "needCheck": True
     }
-
-
+    resp=session.post(login_url,json=data)
+    print(resp.text)
 
 if __name__ == "__main__":
     login()
