@@ -1,10 +1,10 @@
 # BOSS直聘
-from selenium.webdriver import Chrome
+from selenium.webdriver import Edge
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 import json
 import requests
-
+from selenium.webdriver.chrome.options import Options
 
 
 
@@ -17,8 +17,10 @@ def base64_api(img, uname="q6035945", pwd="q6035945", typeid=27) :
         return result["message"]
 
 
-
-web = Chrome()
+opt=Options()
+opt.add_argument("--headless")
+opt.add_argument("--disable=gpu")
+web = Edge(executable_path=r'C:\Users\SMou\Desktop\work\python_workspace\lufei\basics\selenium_test\msedgedriver.exe')
 web.get("https://login.zhipin.com/?ka=header-login")
 web.implicitly_wait(10)
 web.find_element(
