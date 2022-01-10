@@ -45,7 +45,23 @@ def base64_api(uname, pwd, img, typeid):
     return ""
 
 
+def login():
+    login_url=""
+    headers={
+        "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"
+    }
+    data={
+        "userName": "123",
+        "password": "123",
+        "captcha": "?",
+        "imgId": "f250ac4b1b0844849c379a27657ed535",
+        "developerFlag": false,
+        "needCheck": true
+    }
+
+
+
 if __name__ == "__main__":
     img_path = "C:/Users/Administrator/Desktop/file.jpg"
-    result = base64_api(uname='你的账号', pwd='你的密码', img=img_path, typeid=3)
+    result = base64_api(uname='q6035945', pwd='q6035945', img=img_path, typeid=3)
     print(result)
