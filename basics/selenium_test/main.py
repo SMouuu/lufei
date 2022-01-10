@@ -1,5 +1,6 @@
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome import options
+from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.keys import Keys
 import time
 from selenium.webdriver.support.select import Select
@@ -16,6 +17,8 @@ if __name__ == '__main__':
     x_btn = web.find_element_by_xpath('//*[@id="cboxClose"]')
     x_btn.click()
     time.sleep(1)
+    # web.implicitly_wait(10)
+    
     #selenium执行js
     web.execute_script(
         '''
