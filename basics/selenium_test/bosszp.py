@@ -34,7 +34,7 @@ print(tu)
 verify_code=base64_api(tu)
 print(type(verify_code))
 for p in verify_code.split("|"):
-    x=int(p.split[","][0])
+    x=int(p.split(",")[0])
     y=int(p.split(",")[1])
     ActionChains(web).move_to_element_with_offset(verify_div,xoffset=x,yoffset=y).click().perform()
 web.close()
