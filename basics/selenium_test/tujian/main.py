@@ -46,7 +46,12 @@ def base64_api(uname, pwd, img, typeid):
 
 
 def login():
-    login_url=""
+    verify_url="http://admin.ttshitu.com/captcha_v2"
+    session=requests.session()
+    resp=session.get(verify_url)
+    print(resp.text)
+
+    login_url="http://www.ttshitu.com/login.html"
     headers={
         "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"
     }
@@ -55,13 +60,11 @@ def login():
         "password": "123",
         "captcha": "?",
         "imgId": "f250ac4b1b0844849c379a27657ed535",
-        "developerFlag": false,
-        "needCheck": true
+        "developerFlag": False,
+        "needCheck": True
     }
 
 
 
 if __name__ == "__main__":
-    img_path = "C:/Users/Administrator/Desktop/file.jpg"
-    result = base64_api(uname='q6035945', pwd='q6035945', img=img_path, typeid=3)
-    print(result)
+    login()
