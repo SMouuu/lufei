@@ -10,4 +10,6 @@ from itemadapter import ItemAdapter
 
 class GamePipeline:
     def process_item(self, item, spider):
+        print(item)
+        print(spider.name)
         return item
