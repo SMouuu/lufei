@@ -23,4 +23,5 @@ class XiaoSpider(scrapy.Spider):
                 "categroy": categroy,
                 "date": date
             }
+            # 把数据交给pipeline来进行持久化数据
             yield dic
