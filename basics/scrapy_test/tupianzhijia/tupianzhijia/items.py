@@ -6,9 +6,8 @@
 import scrapy
 
 
-class CaipiaoItem(scrapy.Item):
+class MeinvItem(scrapy.Item):
     # define the fields for your item here like:
-    # name = scrapy.Field()
-    qihao=scrapy.Field()
-    red_ball=scrapy.Field()
-    blue_ball=scrapy.Field()
+    name = scrapy.Field()
+    img_src= scrapy.Field()
+    pass
