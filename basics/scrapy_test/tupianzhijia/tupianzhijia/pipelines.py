@@ -17,7 +17,7 @@ class TupianzhijiaPipeline:
 
 class MeinvSavePipeline(ImagesPipeline):
     def get_media_requests(self, item, info):
-        return scrapy.Request(item['img_src'])
+        yield scrapy.Request(item['img_src'])
 
     def file_path(self, request, response=None, info=None, *, item=None):
         file_name = request.url.split("/")[-1]

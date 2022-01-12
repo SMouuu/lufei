@@ -15,7 +15,14 @@ class MeinvSpider(scrapy.Spider):
                 method='get',
                 callback=self.parse_detail  # 回调函数
             )
-            break
+        #下一页
+        next_href=response.xpath("//div[@class='pages']/ul/li/a[contains(text(),'下一页')]/@href").extract_first()
+        # print(next_href)
+        if next_href:
+            yield scrapy.Request(
+                url=response.urljoin(next_href),
+                callback=self.parse
+            )
 
     def parse_detail(self, response, **kwargs):
         name=response.xpath('//*[@id="container"]/div/div/div[2]/h1').extract_first()
