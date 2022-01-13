@@ -7,13 +7,12 @@ from scrapy import signals
 
 # useful for handling different item types with a single interface
 from itemadapter import is_item, ItemAdapter
-from w3lib.http import basic_auth_header
+from boss.request import SeleniumRequest
+from selenium.webdriver import Chrome
+from scrapy.http.response.html import HtmlResponse
 
-from douban.settings import USER_AGENT_LIST, PROXY_IP_LIST
-from random import choice
 
-
-class DoubanSpiderMiddleware:
+class BossSpiderMiddleware:
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the spider middleware does not modify the
     # passed objects.
@@ -60,24 +59,35 @@ class DoubanSpiderMiddleware:
         spider.logger.info('Spider opened: %s' % spider.name)
 
 
-class DoubanDownloaderMiddleware:
+class BossDownloaderMiddleware:
+    # Not all methods need to be defined. If a method is not defined,
+    # scrapy acts as if the downloader middleware does not modify the
+    # passed objects.
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        # This method is used by Scrapy to create your spiders.
+        s = cls()
+        crawler.signals.connect(s.spider_opened, signal=signals.spider_opened)
+        crawler.signals.connect(s.spider_closed, signal=signals.spider_closed)
+        return s
+
     def process_request(self, request, spider):
-        ua = choice(USER_AGENT_LIST)
-        request.headers['User-Agent'] = ua
-        return None
+        if isinstance(request, SeleniumRequest):
+            page_source = self.web.get(request.url)
+            return HtmlResponse(
+                url=request.url,
+                status=200,
+                body=page_source,
+                request=request,
+                encoding='utf-8'
+            )
+        else:
+            return None
 
+    def spider_opened(self, spider):
+        spider.logger.info('Spider opened: %s' % spider.name)
+        self.web = Chrome()
 
-# 免费代理
-# class ProxyDownloaderMiddleware:
-#     def process_request(self,request,spider):
-#         ip=choice(PROXY_IP_LIST)
-#         request.meta['proxy']="https://"+ip
-#         return None
-
-# 收费IP
-class MoneyProxyDownloaderMiddleware:
-    def process_request(self, request, spider):
-        proxy = ""
-        request.meta['proxy'] = f"http://{proxy}"
-        request.headers['Proxy-Authorizeation'] = basic_auth_header('', '')
-        request.headers["Connection"] = "close"
+    def spider_closed(self, spider):
+        self.web.close()
