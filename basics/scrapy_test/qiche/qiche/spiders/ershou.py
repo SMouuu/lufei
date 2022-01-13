@@ -10,12 +10,11 @@ class ErshouSpider(CrawlSpider):
 
     rules = (
         Rule(LinkExtractor(restrict_xpaths="//ul[@class='viewlist_ul']/li/a"), callback='parse_item', follow=False),
-        Rule(LinkExtractor(restrict_xpaths="//div[@id='listpagination']/a"), callback='parse_item', follow=True)
+        Rule(LinkExtractor(restrict_xpaths="//div[@id='listpagination']/a"), follow=True)
     )
 
-    def parse_item(self, response):
-        item = {}
-        # item['domain_id'] = response.xpath('//input[@id="sid"]/@value').get()
-        # item['name'] = response.xpath('//div[@id="name"]').get()
-        # item['description'] = response.xpath('//div[@id="description"]').get()
-        return item
+    def parse_item(self, resp):
+        # 处理详情页
+        title = resp.xpath("//div[@class='car-box']/h3/text()").extract_first()
+        price = resp.xpath("//span[@id='overlayPrice']/text()").extract_first()
+        print(title, price)
