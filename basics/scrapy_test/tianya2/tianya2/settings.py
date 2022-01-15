@@ -78,7 +78,13 @@ REDIS_PARAMS = {
 # scrapy_redis相关配置
 SCHEDULER = "scrapy_redis.scheduler.Scheduler"
 SCHEDULER_PERSIST = True  # 如果为真. 在关闭时自动保存请求信息, 如果为假, 则不保存请求信息
-DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"  # 去重的逻辑. 要用redis的
+# DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"  # 去重的逻辑. 要用redis的
+# 布隆过滤器
+DUPEFILTER_CLASS = "scrapy_redis_boolmfilter.duperfilter.RFPDuperFilter"
+# 哈希个数，默认6
+BLOOMFILTER_HASH_NUMBER = 6
+# bloomfilter 的bit参数 默认30 占用128MB 去重1亿量级的数据
+BLOOMFILTER_BIT = 30
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
