@@ -34,4 +34,4 @@ class KaoshiSpider(scrapy.Spider):
         points=resp.xpath("//ul[@class='sction-point-item']")
         for p in points:
             parents=points.xpath("./ancestor-or-self::ul[@class='chapter-item']")
-            for p in parents:
+
