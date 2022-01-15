@@ -1,6 +1,6 @@
 import scrapy
 from scrapy_splash import SplashRequest
-
+from scrapy_redis.spiders import RedisSpider
 lua_source = '''
     function main(splash, args)
         assert (splash:go(args.url))
@@ -39,10 +39,11 @@ lua_source = '''
 '''
 
 
-class WangyiSpider(scrapy.Spider):
+class WangyiSpider(RedisSpider):
     name = 'wangyi'
     allowed_domains = ['163.com']
-    start_urls = ['https://news.163.com/']
+    # start_urls = ['https://news.163.com/']
+    redis_key = "wangyi:news:start_urls"
 
     def start_requests(self):
         yield SplashRequest(
@@ -52,7 +53,8 @@ class WangyiSpider(scrapy.Spider):
             args={
                 "lua_source": lua_source,
                 "wait":2
-            }
+            },
+            dont_filter=True
         )
 
     def parse(self, resp, **kwargs):

@@ -27,9 +27,30 @@ DOWNLOADER_MIDDLEWARES = {
 #     'scrapy_splash.SplashDeduplicateArgsMiddleware': 100,
 # }
 # 去重过滤器, 这个必须要配置
-DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
+#配置自己过滤器
+DUPEFILTER_CLASS = 'news.dupefilter.MyDupeFilter'
 # 使用Splash的Http缓存, 这个必须要配置
 HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'
+
+
+# redis相关配置
+REDIS_HOST = "192.168.75.128"
+REDIS_PORT = 6380
+REDIS_DB = 0
+REDIS_PARAMS = {
+    "password": "123456"
+}
+
+# scrapy_redis相关配置
+SCHEDULER = "scrapy_redis.scheduler.Scheduler"
+SCHEDULER_PERSIST = True  # 如果为真. 在关闭时自动保存请求信息, 如果为假, 则不保存请求信息
+# DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"  # 去重的逻辑. 要用redis的
+# 布隆配置
+# 哈希个数，默认6
+BLOOMFILTER_HASH_NUMBER = 6
+# bloomfilter 的bit参数 默认30 占用128MB 去重1亿量级的数据
+BLOOMFILTER_BIT = 30
+
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # USER_AGENT = 'news (+http://www.yourdomain.com)'
